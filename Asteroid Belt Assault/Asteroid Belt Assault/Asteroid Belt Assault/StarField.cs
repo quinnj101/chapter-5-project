@@ -21,7 +21,6 @@ namespace Asteroid_Belt_Assault
             int screenWidth,
             int screenHeight,
             int starCount,
-            Vector2 starVelocity,
             Texture2D texture,
             Rectangle frameRectangle)
         {
@@ -34,7 +33,7 @@ namespace Asteroid_Belt_Assault
                         rand.Next(0, screenHeight)),
                     texture,
                     frameRectangle,
-                    starVelocity));
+                    new Vector2(rand.Next(-4,4), rand.Next(30,150))));
                 Color starColor = colors[rand.Next(0, colors.Count())];
                 starColor *= (float)(rand.Next(30, 80) / 100f); stars[stars.Count() - 1].TintColor = starColor;
             }

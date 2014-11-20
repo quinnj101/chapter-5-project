@@ -19,10 +19,15 @@ namespace Asteroid_Belt_Assault
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        enum GameStates { TitleScreen, Playing, PlayerDead, GameOver };
+        enum GameStates { TitleScreen, Playing, PlayerDead, GameOver,Levels,LoadLevel };
+        enum Planets { SUN, EARTH, MARS, MERCURY, NEPTUNE, none };
         GameStates gameState = GameStates.TitleScreen;
+        Planets Planet = Planets.none;
         Texture2D titleScreen;
         Texture2D spriteSheet;
+        Texture2D planets;
+
+        Random rand = new Random();
 
         StarField starField;
         AsteroidManager asteroidManager;
@@ -31,6 +36,8 @@ namespace Asteroid_Belt_Assault
         ExplosionManager explosionManager;
 
         CollisionManager collisionManager;
+
+        MouseState ms;
 
         SpriteFont pericles14;
 
@@ -44,6 +51,12 @@ namespace Asteroid_Belt_Assault
         private Vector2 scoreLocation = new Vector2(20, 10);
         private Vector2 livesLocation = new Vector2(20, 25);
 
+        bool leftMouseClicked;
+        bool Canclick;
+
+        Rectangle mouserect;
+
+        Sprite sun, mercury, earth, mars, neptune;
 
         public Game1()
         {
@@ -75,12 +88,18 @@ namespace Asteroid_Belt_Assault
 
             titleScreen = Content.Load<Texture2D>(@"Textures\TitleScreen");
             spriteSheet = Content.Load<Texture2D>(@"Textures\spriteSheet");
+            planets = Content.Load<Texture2D>(@"Textures\Planets");
+
+            sun=new Sprite(new Vector2(10, 200), planets, new Rectangle(2 * 59, 3 * 59, 59, 59), new Vector2(0, 0));
+            earth=new Sprite(new Vector2(280, 170), planets, new Rectangle(3 * 59, 3 * 59, 59, 59), new Vector2(0, 0));
+            mercury = new Sprite(new Vector2(150, 200), planets, new Rectangle(1 * 59, 3 * 59, 59, 59), new Vector2(0, 0));
+            neptune=new Sprite(new Vector2(700, 100), planets, new Rectangle(0 * 59, 3 * 59, 59, 59), new Vector2(0, 0));
+            mars=new Sprite(new Vector2(500, 220), planets, new Rectangle(1 * 59, 2 * 59, 59, 59), new Vector2(0, 0));
 
             starField = new StarField(
                 this.Window.ClientBounds.Width,
                 this.Window.ClientBounds.Height,
                 200,
-                new Vector2(0, 30f),
                 spriteSheet,
                 new Rectangle(0, 450, 2, 2));
 
@@ -169,8 +188,24 @@ namespace Asteroid_Belt_Assault
 
             // TODO: Add your update logic here
 
+            MouseState ms = Mouse.GetState();
+            
+            leftMouseClicked = false;
+            //Canclick = true;
+            if (ms.LeftButton != ButtonState.Pressed)
+                Canclick = true;
+            if (ms.LeftButton == ButtonState.Pressed && Canclick == true)
+            {
+                leftMouseClicked = true;
+                Canclick = false;
+            }
+
+            mouserect = new Rectangle(ms.X, ms.Y, 1, 1);
+
+            IsMouseVisible = false;
             switch (gameState)
             {
+                
                 case GameStates.TitleScreen:
                     titleScreenTimer +=
                         (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -184,7 +219,7 @@ namespace Asteroid_Belt_Assault
                             playerManager.LivesRemaining = playerStartingLives;
                             playerManager.PlayerScore = 0;
                             resetGame();
-                            gameState = GameStates.Playing;
+                            gameState = GameStates.Levels;
                         }
                     }
                     break;
@@ -245,7 +280,35 @@ namespace Asteroid_Belt_Assault
                         gameState = GameStates.TitleScreen;
                     }
                     break;
+                case GameStates.Levels:
 
+                    IsMouseVisible = true;
+
+                    if (sun.IsBoxColliding(mouserect) && leftMouseClicked)
+                    {
+                        Planet = Planets.SUN; gameState = GameStates.LoadLevel;
+                    }
+                    if (earth.IsBoxColliding(mouserect) && leftMouseClicked)
+                    {
+                        Planet = Planets.EARTH; gameState = GameStates.LoadLevel;
+                    }
+                    if (mercury.IsBoxColliding(mouserect) && leftMouseClicked)
+                    {
+                        Planet = Planets.MERCURY; gameState = GameStates.LoadLevel;
+                    }
+                    if (mars.IsBoxColliding(mouserect) && leftMouseClicked)
+                    {
+                        Planet = Planets.MARS; gameState = GameStates.LoadLevel;
+                    }
+                    if (neptune.IsBoxColliding(mouserect) && leftMouseClicked)
+                    {
+                        Planet = Planets.NEPTUNE; gameState = GameStates.LoadLevel;
+                    }
+                    
+                    break;
+                case GameStates.LoadLevel:
+                    gameState = GameStates.Playing;
+                    break;
             }
 
             base.Update(gameTime);
@@ -263,10 +326,27 @@ namespace Asteroid_Belt_Assault
 
             if (gameState == GameStates.TitleScreen)
             {
-                spriteBatch.Draw(titleScreen,
-                    new Rectangle(0, 0, this.Window.ClientBounds.Width,
-                        this.Window.ClientBounds.Height),
-                        Color.White);
+                spriteBatch.Draw(titleScreen,new Rectangle(0, 0, this.Window.ClientBounds.Width,this.Window.ClientBounds.Height),Color.White);
+            }
+            if (gameState == GameStates.Levels)
+            {
+                starField.Draw(spriteBatch);
+                (sun).Draw(spriteBatch);
+                (earth).Draw(spriteBatch);
+                (mercury).Draw(spriteBatch);
+                (neptune).Draw(spriteBatch);
+                (mars).Draw(spriteBatch);
+
+                if (sun.IsBoxColliding(mouserect))
+                    spriteBatch.DrawString(pericles14, "SUN", new Vector2(18, 270), Color.White);//survive
+                if (earth.IsBoxColliding(mouserect))
+                    spriteBatch.DrawString(pericles14, "EARTH", new Vector2(280, 240), Color.White);//defend
+                if (mercury.IsBoxColliding(mouserect))
+                    spriteBatch.DrawString(pericles14, "MERCURY", new Vector2(131, 270), Color.White);//kill
+                if (mars.IsBoxColliding(mouserect))
+                    spriteBatch.DrawString(pericles14, "MARS", new Vector2(505, 290), Color.White);//collect
+                if (neptune.IsBoxColliding(mouserect))
+                    spriteBatch.DrawString(pericles14, "NEPTUNE", new Vector2(685, 170), Color.White);//survive (harder) -- collect health packs
             }
 
             if ((gameState == GameStates.Playing) ||
@@ -287,12 +367,7 @@ namespace Asteroid_Belt_Assault
 
                 if (playerManager.LivesRemaining >= 0)
                 {
-                    spriteBatch.DrawString(
-                        pericles14,
-                        "Ships Remaining: " +
-                            playerManager.LivesRemaining.ToString(),
-                        livesLocation,
-                        Color.White);
+                    spriteBatch.DrawString(pericles14,"Ships Remaining: " +playerManager.LivesRemaining.ToString(),livesLocation,Color.White);
                 }
             }
 
