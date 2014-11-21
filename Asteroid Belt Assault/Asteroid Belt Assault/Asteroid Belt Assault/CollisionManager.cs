@@ -15,17 +15,20 @@ namespace Asteroid_Belt_Assault
         private Vector2 offScreen = new Vector2(-500, -500);
         private Vector2 shotToAsteroidImpact = new Vector2(0, -20);
         private int enemyPointValue = 100;
+        public int killcounter = 0;
 
         public CollisionManager(
             AsteroidManager asteroidManager,
             PlayerManager playerManager,
             EnemyManager enemyManager,
             ExplosionManager explosionManager)
+
         {
             this.asteroidManager = asteroidManager;
             this.playerManager = playerManager;
             this.enemyManager = enemyManager;
             this.explosionManager = explosionManager;
+            this.killcounter = 0;
         }
 
         private void checkShotToEnemyCollisions()
@@ -40,6 +43,7 @@ namespace Asteroid_Belt_Assault
                     {
                         shot.Location = offScreen;
                         enemy.Destroyed = true;
+                        killcounter++;
                         playerManager.PlayerScore += enemyPointValue;
                         explosionManager.AddExplosion(
                             enemy.EnemySprite.Center,

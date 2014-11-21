@@ -19,13 +19,16 @@ namespace Asteroid_Belt_Assault
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        enum GameStates { TitleScreen, Playing, PlayerDead, GameOver,Levels,LoadLevel };
+        enum GameStates { TitleScreen, Playing, PlayerDead, GameOver,Levels,LoadLevel,Win };
         enum Planets { SUN, EARTH, MARS, MERCURY, NEPTUNE, none };
         GameStates gameState = GameStates.TitleScreen;
         Planets Planet = Planets.none;
         Texture2D titleScreen;
         Texture2D spriteSheet;
         Texture2D planets;
+        Texture2D WinImg;
+        Texture2D Check;
+        Texture2D Vial;
 
         Random rand = new Random();
 
@@ -58,18 +61,26 @@ namespace Asteroid_Belt_Assault
 
         Sprite sun, mercury, earth, mars, neptune;
 
+        bool suncheck = false;
+        bool mercurycheck = false;
+        bool earfcheck = false;
+        bool marscheck = false;
+        bool neptunecheck = false;
+
+        List<Sprite> jizz=new List<Sprite>();
+
+        int jizzingtime = 0;
+        int wintimer = 120;
+        int timeupdate = 0;
+        int seconds = 1;
+        int minutes = 0;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -89,6 +100,9 @@ namespace Asteroid_Belt_Assault
             titleScreen = Content.Load<Texture2D>(@"Textures\TitleScreen");
             spriteSheet = Content.Load<Texture2D>(@"Textures\spriteSheet");
             planets = Content.Load<Texture2D>(@"Textures\Planets");
+            WinImg = Content.Load<Texture2D>(@"Textures\Win");
+            Check = Content.Load<Texture2D>(@"Textures\check");
+            Vial = Content.Load<Texture2D>(@"Textures\vial");
 
             sun=new Sprite(new Vector2(10, 200), planets, new Rectangle(2 * 59, 3 * 59, 59, 59), new Vector2(0, 0));
             earth=new Sprite(new Vector2(280, 170), planets, new Rectangle(3 * 59, 3 * 59, 59, 59), new Vector2(0, 0));
@@ -96,12 +110,7 @@ namespace Asteroid_Belt_Assault
             neptune=new Sprite(new Vector2(700, 100), planets, new Rectangle(0 * 59, 3 * 59, 59, 59), new Vector2(0, 0));
             mars=new Sprite(new Vector2(500, 220), planets, new Rectangle(1 * 59, 2 * 59, 59, 59), new Vector2(0, 0));
 
-            starField = new StarField(
-                this.Window.ClientBounds.Width,
-                this.Window.ClientBounds.Height,
-                200,
-                spriteSheet,
-                new Rectangle(0, 450, 2, 2));
+            starField = new StarField(this.Window.ClientBounds.Width,this.Window.ClientBounds.Height,200,spriteSheet,new Rectangle(0, 450, 2, 2));
 
             asteroidManager = new AsteroidManager(
                 10,
@@ -151,11 +160,10 @@ namespace Asteroid_Belt_Assault
 
             // TODO: use this.Content to load your game content here
         }
-
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
+        public void getjizz()
+        {
+            jizz.Add(new Sprite(new Vector2(100, 700), planets, new Rectangle(2 * 59, 3 * 59, 59, 59), new Vector2(0, 0)););
+        }
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
@@ -175,11 +183,6 @@ namespace Asteroid_Belt_Assault
             playerManager.Destroyed = false;
         }
         
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
@@ -233,6 +236,43 @@ namespace Asteroid_Belt_Assault
                     explosionManager.Update(gameTime);
                     collisionManager.CheckCollisions();
 
+
+                    if (Planet == Planets.NEPTUNE || Planet == Planets.SUN)
+                    {
+                        timeupdate++;
+                        if (timeupdate >= 60)
+                        {
+                            timeupdate = 0;
+                            if (seconds >= 1)
+                                seconds--;
+                            else if (minutes >= 1)
+                            {
+                                minutes--;
+                                seconds = 59;
+                            }
+                            else
+                                gameState = GameStates.Win;
+                        }
+                    }
+                    if (Planet == Planets.MERCURY)
+                    {
+                        if (collisionManager.killcounter >= 30)
+                        {
+                            gameState = GameStates.Win;
+                        }
+                    }
+                    if (Planet == Planets.MARS)
+                    {
+                        jizzingtime--;
+                        if (jizzingtime <= 0)
+                        {
+                            getjizz();
+                            jizzingtime = rand.Next(100, 700);
+                        }
+                    }
+                    
+
+
                     if (playerManager.Destroyed)
                     {
                         playerDeathTimer = 0f;
@@ -249,7 +289,23 @@ namespace Asteroid_Belt_Assault
                     }
 
                     break;
-
+                case GameStates.Win:
+                    if (Planet == Planets.SUN)
+                        suncheck = true;
+                    if (Planet == Planets.EARTH)
+                        earfcheck = true;
+                    if (Planet == Planets.MERCURY)
+                        mercurycheck = true;
+                    if (Planet == Planets.MARS)
+                        marscheck = true;
+                    if (Planet == Planets.NEPTUNE)
+                        neptunecheck = true;
+                    seconds = 0;
+                    minutes = 2;
+                    wintimer--;
+                    if (wintimer <= 0)
+                        gameState = GameStates.Levels;
+                    break;
                 case GameStates.PlayerDead:
                     playerDeathTimer +=
                         (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -326,7 +382,7 @@ namespace Asteroid_Belt_Assault
 
             if (gameState == GameStates.TitleScreen)
             {
-                spriteBatch.Draw(titleScreen,new Rectangle(0, 0, this.Window.ClientBounds.Width,this.Window.ClientBounds.Height),Color.White);
+                spriteBatch.Draw(titleScreen, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height), Color.White);
             }
             if (gameState == GameStates.Levels)
             {
@@ -336,34 +392,60 @@ namespace Asteroid_Belt_Assault
                 (mercury).Draw(spriteBatch);
                 (neptune).Draw(spriteBatch);
                 (mars).Draw(spriteBatch);
-
+                if (suncheck)
+                    spriteBatch.Draw(Check, new Rectangle(sun.BoundingBoxRect.X, sun.BoundingBoxRect.Y, 59, 59), Color.White);
+                if (earfcheck)
+                    spriteBatch.Draw(Check, new Rectangle(earth.BoundingBoxRect.X, earth.BoundingBoxRect.Y, 59, 59), Color.White);
+                if (mercurycheck)
+                    spriteBatch.Draw(Check, new Rectangle(mercury.BoundingBoxRect.X, mercury.BoundingBoxRect.Y, 59, 59), Color.White);
+                if (marscheck)
+                    spriteBatch.Draw(Check, new Rectangle(mars.BoundingBoxRect.X, mars.BoundingBoxRect.Y, 59, 59), Color.White);
+                if (neptunecheck)
+                    spriteBatch.Draw(Check, new Rectangle(neptune.BoundingBoxRect.X, neptune.BoundingBoxRect.Y, 59, 59), Color.White);
                 if (sun.IsBoxColliding(mouserect))
+                {
                     spriteBatch.DrawString(pericles14, "SUN", new Vector2(18, 270), Color.White);//survive
+                }
                 if (earth.IsBoxColliding(mouserect))
+                {
                     spriteBatch.DrawString(pericles14, "EARTH", new Vector2(280, 240), Color.White);//defend
+                }
                 if (mercury.IsBoxColliding(mouserect))
+                {
                     spriteBatch.DrawString(pericles14, "MERCURY", new Vector2(131, 270), Color.White);//kill
+                }
                 if (mars.IsBoxColliding(mouserect))
+                {
                     spriteBatch.DrawString(pericles14, "MARS", new Vector2(505, 290), Color.White);//collect
+                }
                 if (neptune.IsBoxColliding(mouserect))
+                {
                     spriteBatch.DrawString(pericles14, "NEPTUNE", new Vector2(685, 170), Color.White);//survive (harder) -- collect health packs
+                }
             }
 
             if ((gameState == GameStates.Playing) ||
                 (gameState == GameStates.PlayerDead) ||
-                (gameState == GameStates.GameOver))
+                (gameState == GameStates.GameOver)||
+                (gameState == GameStates.Win))
             {
                 starField.Draw(spriteBatch);
                 asteroidManager.Draw(spriteBatch);
                 playerManager.Draw(spriteBatch);
                 enemyManager.Draw(spriteBatch);
                 explosionManager.Draw(spriteBatch);
-
-                spriteBatch.DrawString(
-                    pericles14,
-                    "Score: " + playerManager.PlayerScore.ToString(),
-                    scoreLocation,
-                    Color.White);
+                if (Planet == Planets.SUN || Planet == Planets.NEPTUNE)
+                {
+                    if (seconds<=9)
+                        spriteBatch.DrawString(pericles14, "TIME TO SURVIVE: " + minutes + ": 0"+seconds, new Vector2(550, 10), Color.White);//survive
+                    else
+                        spriteBatch.DrawString(pericles14, "TIME TO SURVIVE: " + minutes + ": " + seconds, new Vector2(550, 10), Color.White);//survive
+                }
+                if (Planet == Planets.MERCURY)
+                {
+                    spriteBatch.DrawString(pericles14, "KILLS: " +collisionManager.killcounter + "/20", new Vector2(550, 10), Color.White);//survive
+                }
+                spriteBatch.DrawString( pericles14,"Score: " + playerManager.PlayerScore.ToString(),scoreLocation,Color.White);
 
                 if (playerManager.LivesRemaining >= 0)
                 {
@@ -372,16 +454,9 @@ namespace Asteroid_Belt_Assault
             }
 
             if ((gameState == GameStates.GameOver))
-            {
-                spriteBatch.DrawString(
-                    pericles14,
-                    "G A M E  O V E R !",
-                    new Vector2(
-                        this.Window.ClientBounds.Width / 2 -
-                          pericles14.MeasureString("G A M E  O V E R !").X / 2,
-                        50),
-                    Color.White);
-            }
+                spriteBatch.DrawString(pericles14,"G A M E  O V E R !",new Vector2(this.Window.ClientBounds.Width / 2 -pericles14.MeasureString("G A M E  O V E R !").X / 2,50),Color.White);
+            if (gameState==GameStates.Win)
+                spriteBatch.Draw(WinImg, new Rectangle(300, 200,200, 100), Color.White);
 
 
             spriteBatch.End();
