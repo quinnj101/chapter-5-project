@@ -10,3 +10,5 @@ Content\Fonts\Pericles14.xnb
 Content\Textures\Planets.xnb
 Content\Textures\Win.xnb
 Content\Textures\check.xnb
+Content\Textures\vial.xnb
+Content\Textures\butt.xnb

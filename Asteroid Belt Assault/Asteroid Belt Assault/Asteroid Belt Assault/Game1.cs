@@ -29,6 +29,7 @@ namespace Asteroid_Belt_Assault
         Texture2D WinImg;
         Texture2D Check;
         Texture2D Vial;
+        Texture2D buutt;
 
         Random rand = new Random();
 
@@ -44,7 +45,7 @@ namespace Asteroid_Belt_Assault
 
         SpriteFont pericles14;
 
-        private float playerDeathDelayTime = 10f;
+        private float playerDeathDelayTime = 0f;
         private float playerDeathTimer = 0f;
         private float titleScreenTimer = 0f;
         private float titleScreenDelayTime = 1f;
@@ -68,12 +69,13 @@ namespace Asteroid_Belt_Assault
         bool neptunecheck = false;
 
         List<Sprite> jizz=new List<Sprite>();
+        int jizzCount=0;
 
         int jizzingtime = 0;
         int wintimer = 120;
         int timeupdate = 0;
-        int seconds = 1;
-        int minutes = 0;
+        int seconds = 0;
+        int minutes = 2;
 
         public Game1()
         {
@@ -103,6 +105,7 @@ namespace Asteroid_Belt_Assault
             WinImg = Content.Load<Texture2D>(@"Textures\Win");
             Check = Content.Load<Texture2D>(@"Textures\check");
             Vial = Content.Load<Texture2D>(@"Textures\vial");
+            buutt = Content.Load<Texture2D>(@"Textures\butt");
 
             sun=new Sprite(new Vector2(10, 200), planets, new Rectangle(2 * 59, 3 * 59, 59, 59), new Vector2(0, 0));
             earth=new Sprite(new Vector2(280, 170), planets, new Rectangle(3 * 59, 3 * 59, 59, 59), new Vector2(0, 0));
@@ -141,6 +144,8 @@ namespace Asteroid_Belt_Assault
                     this.Window.ClientBounds.Width,
                     this.Window.ClientBounds.Height));
 
+            enemyManager.game1 = this;
+
             explosionManager = new ExplosionManager(
                 spriteSheet,
                 new Rectangle(0, 100, 50, 50),
@@ -162,14 +167,25 @@ namespace Asteroid_Belt_Assault
         }
         public void getjizz()
         {
-            jizz.Add(new Sprite(new Vector2(100, 700), planets, new Rectangle(2 * 59, 3 * 59, 59, 59), new Vector2(0, 0)););
+            jizz.Add(new Sprite(new Vector2(rand.Next(100,700), -100), Vial, new Rectangle(0, 0, 20, 20), new Vector2(0,rand.Next(50,200))));
         }
-        protected override void UnloadContent()
+        public string getplanet()
         {
-            // TODO: Unload any non ContentManager content here
-        }
+            string what="foo";
 
-        private void resetGame()
+            if (Planet == Planets.MARS) what = "MARS";
+            if (Planet == Planets.EARTH) what = "EARTH";
+            if (Planet == Planets.SUN) what = "SUN";
+            if (Planet == Planets.MERCURY) what = "MERCURY";
+            if (Planet == Planets.NEPTUNE) what = "NEPTUNE";
+
+            return what;
+        }
+        public void Unload()
+        {
+            jizz.Clear();
+        }
+        public void resetGame()
         {
             playerManager.playerSprite.Location = playerStartLocation;
             foreach (Sprite asteroid in asteroidManager.Asteroids)
@@ -185,6 +201,7 @@ namespace Asteroid_Belt_Assault
         
         protected override void Update(GameTime gameTime)
         {
+            
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -263,11 +280,28 @@ namespace Asteroid_Belt_Assault
                     }
                     if (Planet == Planets.MARS)
                     {
+
+
                         jizzingtime--;
                         if (jizzingtime <= 0)
                         {
                             getjizz();
-                            jizzingtime = rand.Next(100, 700);
+                            jizzingtime = rand.Next(0, 300);
+                        }
+                        for (int i = 0; i < jizz.Count; i++)
+                        {
+                            jizz[i].Update(gameTime);
+                            if (jizz[i].IsCircleColliding(playerManager.playerSprite.Center, playerManager.playerSprite.CollisionRadius))
+                            {
+                                jizz.Remove(jizz[i]);
+                                jizzCount++;
+                            }
+                            
+                        }
+                        if (jizzCount >= 20)
+                        {
+                            gameState = GameStates.Win;
+                            marscheck = true;
                         }
                     }
                     
@@ -307,6 +341,7 @@ namespace Asteroid_Belt_Assault
                         gameState = GameStates.Levels;
                     break;
                 case GameStates.PlayerDead:
+                    Unload();
                     playerDeathTimer +=
                         (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -387,6 +422,7 @@ namespace Asteroid_Belt_Assault
             if (gameState == GameStates.Levels)
             {
                 starField.Draw(spriteBatch);
+
                 (sun).Draw(spriteBatch);
                 (earth).Draw(spriteBatch);
                 (mercury).Draw(spriteBatch);
@@ -404,7 +440,7 @@ namespace Asteroid_Belt_Assault
                     spriteBatch.Draw(Check, new Rectangle(neptune.BoundingBoxRect.X, neptune.BoundingBoxRect.Y, 59, 59), Color.White);
                 if (sun.IsBoxColliding(mouserect))
                 {
-                    spriteBatch.DrawString(pericles14, "SUN", new Vector2(18, 270), Color.White);//survive
+                    spriteBatch.DrawString(pericles14, "SUN", new Vector2(18, 270), Color.White);//survive  -done
                 }
                 if (earth.IsBoxColliding(mouserect))
                 {
@@ -412,11 +448,11 @@ namespace Asteroid_Belt_Assault
                 }
                 if (mercury.IsBoxColliding(mouserect))
                 {
-                    spriteBatch.DrawString(pericles14, "MERCURY", new Vector2(131, 270), Color.White);//kill
+                    spriteBatch.DrawString(pericles14, "MERCURY", new Vector2(131, 270), Color.White);//kill  -done
                 }
                 if (mars.IsBoxColliding(mouserect))
                 {
-                    spriteBatch.DrawString(pericles14, "MARS", new Vector2(505, 290), Color.White);//collect
+                    spriteBatch.DrawString(pericles14, "MARS", new Vector2(505, 290), Color.White);//collect   -done
                 }
                 if (neptune.IsBoxColliding(mouserect))
                 {
@@ -430,20 +466,33 @@ namespace Asteroid_Belt_Assault
                 (gameState == GameStates.Win))
             {
                 starField.Draw(spriteBatch);
+                if (Planet == Planets.EARTH)
+                {
+                    spriteBatch.Draw(buutt, new Rectangle(150, 420, 500, 59 + 1), Color.White);
+                }
                 asteroidManager.Draw(spriteBatch);
                 playerManager.Draw(spriteBatch);
                 enemyManager.Draw(spriteBatch);
                 explosionManager.Draw(spriteBatch);
+                
+                if (Planet == Planets.MARS)
+                {
+                    spriteBatch.DrawString(pericles14, "JIZZ COLLECTED: "+jizzCount+"/20", new Vector2(550, 10), Color.White);//survive
+                    for (int i = 0; i < jizz.Count; i++)
+                    {
+                        jizz[i].Draw(spriteBatch);
+                    }
+                }
                 if (Planet == Planets.SUN || Planet == Planets.NEPTUNE)
                 {
                     if (seconds<=9)
-                        spriteBatch.DrawString(pericles14, "TIME TO SURVIVE: " + minutes + ": 0"+seconds, new Vector2(550, 10), Color.White);//survive
+                        spriteBatch.DrawString(pericles14, "TIME TO SURVIVE: " + minutes + ": 0" + seconds, new Vector2(550, 10), Color.White);//survive
                     else
                         spriteBatch.DrawString(pericles14, "TIME TO SURVIVE: " + minutes + ": " + seconds, new Vector2(550, 10), Color.White);//survive
                 }
                 if (Planet == Planets.MERCURY)
                 {
-                    spriteBatch.DrawString(pericles14, "KILLS: " +collisionManager.killcounter + "/20", new Vector2(550, 10), Color.White);//survive
+                    spriteBatch.DrawString(pericles14, "KILLS: " +collisionManager.killcounter + "/20", new Vector2(650, 10), Color.White);//survive
                 }
                 spriteBatch.DrawString( pericles14,"Score: " + playerManager.PlayerScore.ToString(),scoreLocation,Color.White);
 
@@ -457,6 +506,7 @@ namespace Asteroid_Belt_Assault
                 spriteBatch.DrawString(pericles14,"G A M E  O V E R !",new Vector2(this.Window.ClientBounds.Width / 2 -pericles14.MeasureString("G A M E  O V E R !").X / 2,50),Color.White);
             if (gameState==GameStates.Win)
                 spriteBatch.Draw(WinImg, new Rectangle(300, 200,200, 100), Color.White);
+
 
 
             spriteBatch.End();

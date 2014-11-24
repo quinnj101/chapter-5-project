@@ -15,13 +15,14 @@ namespace Asteroid_Belt_Assault
 
         public List<Enemy> Enemies = new List<Enemy>();
 
+        public Game1 game1;
         public ShotManager EnemyShotManager;
         private PlayerManager playerManager;
 
-        public int MinShipsPerWave = 5;
-        public int MaxShipsPerWave = 8;
+        public int MinShipsPerWave = 10;
+        public int MaxShipsPerWave = 15;
         private float nextWaveTimer = 0.0f;
-        private float nextWaveMinTimer = 8.0f;
+        private float nextWaveMinTimer = 4.0f;
         private float shipSpawnTimer = 0.0f;
         private float shipSpawnWaitTime = 0.5f;
 
@@ -164,7 +165,11 @@ namespace Asteroid_Belt_Assault
                         Vector2 shotDirection =
                             playerManager.playerSprite.Center -
                             fireLoc;
-
+                        String planet = game1.getplanet();
+                        if ( planet== "EARTH")
+                        {
+                            shotDirection = new Vector2(400, 400) - fireLoc;
+                        }
                         shotDirection.Normalize();
 
                         EnemyShotManager.FireShot(
