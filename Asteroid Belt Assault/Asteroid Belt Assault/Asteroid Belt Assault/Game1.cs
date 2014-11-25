@@ -30,6 +30,9 @@ namespace Asteroid_Belt_Assault
         Texture2D Check;
         Texture2D Vial;
         Texture2D buutt;
+        Texture2D HpBar;
+        Texture2D Healthpack;
+        Texture2D Pause;
 
         Random rand = new Random();
 
@@ -50,6 +53,8 @@ namespace Asteroid_Belt_Assault
         private float titleScreenTimer = 0f;
         private float titleScreenDelayTime = 1f;
 
+        int Health = 5000;
+
         private int playerStartingLives = 3;
         private Vector2 playerStartLocation = new Vector2(390, 550);
         private Vector2 scoreLocation = new Vector2(20, 10);
@@ -62,6 +67,9 @@ namespace Asteroid_Belt_Assault
 
         Sprite sun, mercury, earth, mars, neptune;
 
+        Rectangle buttbox = new Rectangle(150, 420, 500, 59 + 1);
+        Rectangle Pausebox = new Rectangle(0, 0, 50, 50);
+
         bool suncheck = false;
         bool mercurycheck = false;
         bool earfcheck = false;
@@ -72,6 +80,12 @@ namespace Asteroid_Belt_Assault
         int jizzCount=0;
 
         int jizzingtime = 0;
+
+        List<Sprite> Healthpacks = new List<Sprite>();
+        int Healthcount = 0;
+
+        int Healthtime = 0;
+
         int wintimer = 120;
         int timeupdate = 0;
         int seconds = 0;
@@ -106,6 +120,9 @@ namespace Asteroid_Belt_Assault
             Check = Content.Load<Texture2D>(@"Textures\check");
             Vial = Content.Load<Texture2D>(@"Textures\vial");
             buutt = Content.Load<Texture2D>(@"Textures\butt");
+            HpBar = Content.Load<Texture2D>(@"Textures\Bar");
+            Healthpack = Content.Load<Texture2D>(@"Textures\hp");
+            Pause = Content.Load<Texture2D>(@"Textures\Pause");
 
             sun=new Sprite(new Vector2(10, 200), planets, new Rectangle(2 * 59, 3 * 59, 59, 59), new Vector2(0, 0));
             earth=new Sprite(new Vector2(280, 170), planets, new Rectangle(3 * 59, 3 * 59, 59, 59), new Vector2(0, 0));
@@ -165,6 +182,10 @@ namespace Asteroid_Belt_Assault
 
             // TODO: use this.Content to load your game content here
         }
+        public void gethealth()
+        {
+            Healthpacks.Add(new Sprite(new Vector2(rand.Next(100, 700), -100), Healthpack, new Rectangle(0, 0, 50, 50), new Vector2(0, rand.Next(50, 200))));
+        }
         public void getjizz()
         {
             jizz.Add(new Sprite(new Vector2(rand.Next(100,700), -100), Vial, new Rectangle(0, 0, 20, 20), new Vector2(0,rand.Next(50,200))));
@@ -183,6 +204,7 @@ namespace Asteroid_Belt_Assault
         }
         public void Unload()
         {
+           
             jizz.Clear();
         }
         public void resetGame()
@@ -197,6 +219,13 @@ namespace Asteroid_Belt_Assault
             playerManager.PlayerShotManager.Shots.Clear();
             enemyManager.EnemyShotManager.Shots.Clear();
             playerManager.Destroyed = false;
+            Health += 100;
+            if (Planet != Planets.NEPTUNE || Planet != Planets.SUN ||Planet != Planets.EARTH)
+            {
+                minutes = 2;
+                seconds = 0;
+            }
+            
         }
         
         protected override void Update(GameTime gameTime)
@@ -254,7 +283,7 @@ namespace Asteroid_Belt_Assault
                     collisionManager.CheckCollisions();
 
 
-                    if (Planet == Planets.NEPTUNE || Planet == Planets.SUN)
+                    if (Planet == Planets.NEPTUNE || Planet == Planets.SUN || Planet==Planets.EARTH)
                     {
                         timeupdate++;
                         if (timeupdate >= 60)
@@ -302,6 +331,49 @@ namespace Asteroid_Belt_Assault
                         {
                             gameState = GameStates.Win;
                             marscheck = true;
+                        }
+                    }
+                    if (Planet == Planets.NEPTUNE)
+                    {
+                        Health -= 6;
+
+                        if (Health >= 5000)
+                        {
+                            Health = 5000;
+                        }
+                        if (Health <= 0)
+                        {
+                            gameState = GameStates.PlayerDead;
+                            Health = 5000;
+
+                        }
+
+                        Healthtime--;
+                        if (Healthtime <= 0)
+                        {
+                            gethealth();
+                            Healthtime = rand.Next(0, 300);
+                        }
+                        for (int i = 0; i < Healthpacks.Count; i++)
+                        {
+                            if (Healthpacks[i].IsCircleColliding(playerManager.playerSprite.Center, playerManager.playerSprite.CollisionRadius))
+                            {
+                                Healthpacks.Remove(Healthpacks[i]);
+                                Healthcount++;
+                                Health += 1000;
+                            }
+
+                        }
+
+                    }
+                    if (Planet == Planets.EARTH)
+                    {
+                        foreach (Sprite shot in enemyManager.EnemyShotManager.Shots)
+                        {
+                             if (shot.IsBoxColliding(buttbox))
+                            {
+                                Health -= 1;
+                            }
                         }
                     }
                     
@@ -356,6 +428,7 @@ namespace Asteroid_Belt_Assault
                         resetGame();
                         gameState = GameStates.Playing;
                     }
+                    
                     break;
 
                 case GameStates.GameOver:
@@ -378,10 +451,13 @@ namespace Asteroid_Belt_Assault
                     if (sun.IsBoxColliding(mouserect) && leftMouseClicked)
                     {
                         Planet = Planets.SUN; gameState = GameStates.LoadLevel;
+                        minutes = 2;
                     }
                     if (earth.IsBoxColliding(mouserect) && leftMouseClicked)
                     {
                         Planet = Planets.EARTH; gameState = GameStates.LoadLevel;
+                        Health = 5000;
+                        minutes = 1;
                     }
                     if (mercury.IsBoxColliding(mouserect) && leftMouseClicked)
                     {
@@ -394,14 +470,19 @@ namespace Asteroid_Belt_Assault
                     if (neptune.IsBoxColliding(mouserect) && leftMouseClicked)
                     {
                         Planet = Planets.NEPTUNE; gameState = GameStates.LoadLevel;
+                        minutes = 3;
                     }
                     
                     break;
                 case GameStates.LoadLevel:
                     gameState = GameStates.Playing;
                     break;
+                    
             }
-
+            for (int i = 0; i < Healthpacks.Count; i++)
+            {
+                Healthpacks[i].Update(gameTime);
+            }
             base.Update(gameTime);
         }
 
@@ -468,7 +549,12 @@ namespace Asteroid_Belt_Assault
                 starField.Draw(spriteBatch);
                 if (Planet == Planets.EARTH)
                 {
-                    spriteBatch.Draw(buutt, new Rectangle(150, 420, 500, 59 + 1), Color.White);
+                    spriteBatch.Draw(buutt, buttbox, Color.White);
+                }
+
+                if (gameState == GameStates.Playing)
+                {
+                    spriteBatch.Draw(Pause,Pausebox,Color.White);
                 }
                 asteroidManager.Draw(spriteBatch);
                 playerManager.Draw(spriteBatch);
@@ -483,12 +569,26 @@ namespace Asteroid_Belt_Assault
                         jizz[i].Draw(spriteBatch);
                     }
                 }
-                if (Planet == Planets.SUN || Planet == Planets.NEPTUNE)
+                if (Planet == Planets.NEPTUNE)
+                {
+                    for (int i = 0; i < Healthpacks.Count; i++)
+                    {
+                        Healthpacks[i].Draw(spriteBatch);
+                    }
+                }
+                if (Planet == Planets.SUN)
                 {
                     if (seconds<=9)
                         spriteBatch.DrawString(pericles14, "TIME TO SURVIVE: " + minutes + ": 0" + seconds, new Vector2(550, 10), Color.White);//survive
                     else
                         spriteBatch.DrawString(pericles14, "TIME TO SURVIVE: " + minutes + ": " + seconds, new Vector2(550, 10), Color.White);//survive
+                }
+                if (Planet == Planets.EARTH || Planet == Planets.NEPTUNE)
+                {
+                    if (seconds <= 9)
+                        spriteBatch.DrawString(pericles14, "TIME TO SURVIVE: " + minutes + ": 0" + seconds, new Vector2(550, 40), Color.White);//survive
+                    else
+                        spriteBatch.DrawString(pericles14, "TIME TO SURVIVE: " + minutes + ": " + seconds, new Vector2(550, 40), Color.White);//survive
                 }
                 if (Planet == Planets.MERCURY)
                 {
@@ -496,6 +596,14 @@ namespace Asteroid_Belt_Assault
                 }
                 spriteBatch.DrawString( pericles14,"Score: " + playerManager.PlayerScore.ToString(),scoreLocation,Color.White);
 
+                if (Planet == Planets.EARTH)
+                {
+                    spriteBatch.Draw(HpBar, new Rectangle(250, 10, Health/10, 20), Color.Green);
+                }
+                if (Planet == Planets.NEPTUNE)
+                {
+                    spriteBatch.Draw(HpBar, new Rectangle(250, 10, Health / 10, 20), Color.Green);
+                }
                 if (playerManager.LivesRemaining >= 0)
                 {
                     spriteBatch.DrawString(pericles14,"Ships Remaining: " +playerManager.LivesRemaining.ToString(),livesLocation,Color.White);

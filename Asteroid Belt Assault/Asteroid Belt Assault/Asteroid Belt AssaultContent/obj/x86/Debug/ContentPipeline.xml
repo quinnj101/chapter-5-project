@@ -8,7 +8,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Textures\SpriteSheet.xnb</Output>
-      <Time>2014-11-24T07:16:54.9264-05:00</Time>
+      <Time>2014-11-25T07:17:45.7706-05:00</Time>
     </Item>
     <Item>
       <Source>Textures\TitleScreen.png</Source>
@@ -17,7 +17,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Textures\TitleScreen.xnb</Output>
-      <Time>2014-11-24T07:16:54.9344-05:00</Time>
+      <Time>2014-11-25T07:17:45.7826-05:00</Time>
     </Item>
     <Item>
       <Source>Sounds\Explosion1.wav</Source>
@@ -26,7 +26,7 @@
       <Processor>SoundEffectProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Sounds\Explosion1.xnb</Output>
-      <Time>2014-11-24T07:16:54.9194-05:00</Time>
+      <Time>2014-11-25T07:17:45.7506-05:00</Time>
     </Item>
     <Item>
       <Source>Sounds\Explosion2.wav</Source>
@@ -35,7 +35,7 @@
       <Processor>SoundEffectProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Sounds\Explosion2.xnb</Output>
-      <Time>2014-11-24T07:16:54.9204-05:00</Time>
+      <Time>2014-11-25T07:17:45.7536-05:00</Time>
     </Item>
     <Item>
       <Source>Sounds\Explosion3.wav</Source>
@@ -44,7 +44,7 @@
       <Processor>SoundEffectProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Sounds\Explosion3.xnb</Output>
-      <Time>2014-11-24T07:16:54.9214-05:00</Time>
+      <Time>2014-11-25T07:17:45.7556-05:00</Time>
     </Item>
     <Item>
       <Source>Sounds\Explosion4.wav</Source>
@@ -53,7 +53,7 @@
       <Processor>SoundEffectProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Sounds\Explosion4.xnb</Output>
-      <Time>2014-11-24T07:16:54.9224-05:00</Time>
+      <Time>2014-11-25T07:17:45.7586-05:00</Time>
     </Item>
     <Item>
       <Source>Sounds\Shot1.wav</Source>
@@ -62,7 +62,7 @@
       <Processor>SoundEffectProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Sounds\Shot1.xnb</Output>
-      <Time>2014-11-24T07:16:54.9234-05:00</Time>
+      <Time>2014-11-25T07:17:45.7616-05:00</Time>
     </Item>
     <Item>
       <Source>Sounds\Shot2.wav</Source>
@@ -71,7 +71,7 @@
       <Processor>SoundEffectProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Sounds\Shot2.xnb</Output>
-      <Time>2014-11-24T07:16:54.9234-05:00</Time>
+      <Time>2014-11-25T07:17:45.7616-05:00</Time>
     </Item>
     <Item>
       <Source>Fonts\Pericles14.spritefont</Source>
@@ -80,7 +80,7 @@
       <Processor>FontDescriptionProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Fonts\Pericles14.xnb</Output>
-      <Time>2014-11-24T07:16:54.9184-05:00</Time>
+      <Time>2014-11-25T07:17:45.7336-05:00</Time>
     </Item>
     <Item>
       <Source>Textures\Planets.png</Source>
@@ -89,7 +89,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Textures\Planets.xnb</Output>
-      <Time>2014-11-24T07:16:54.9254-05:00</Time>
+      <Time>2014-11-25T07:17:45.7686-05:00</Time>
     </Item>
     <Item>
       <Source>Textures\Win.png</Source>
@@ -98,7 +98,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Textures\Win.xnb</Output>
-      <Time>2014-11-24T07:16:54.9354-05:00</Time>
+      <Time>2014-11-25T07:17:45.8306-05:00</Time>
     </Item>
     <Item>
       <Source>Textures\check.png</Source>
@@ -107,7 +107,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Textures\check.xnb</Output>
-      <Time>2014-11-24T07:16:54.9364-05:00</Time>
+      <Time>2014-11-25T07:17:45.8316-05:00</Time>
     </Item>
     <Item>
       <Source>Textures\vial.png</Source>
@@ -116,7 +116,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Textures\vial.xnb</Output>
-      <Time>2014-11-24T07:16:54.9364-05:00</Time>
+      <Time>2014-11-25T07:17:45.8326-05:00</Time>
     </Item>
     <Item>
       <Source>Textures\butt.png</Source>
@@ -125,7 +125,34 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Textures\butt.xnb</Output>
-      <Time>2014-11-24T08:27:41.9424-05:00</Time>
+      <Time>2014-11-25T07:17:45.8316-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Textures\Bar.png</Source>
+      <Name>Textures\Bar</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Textures\Bar.xnb</Output>
+      <Time>2014-11-25T07:23:13.3676-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Textures\hp.png</Source>
+      <Name>Textures\hp</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Textures\hp.xnb</Output>
+      <Time>2014-11-25T08:02:49.7796-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Textures\Pause.png</Source>
+      <Name>Textures\Pause</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Textures\Pause.xnb</Output>
+      <Time>2014-11-25T08:32:01.4616-05:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

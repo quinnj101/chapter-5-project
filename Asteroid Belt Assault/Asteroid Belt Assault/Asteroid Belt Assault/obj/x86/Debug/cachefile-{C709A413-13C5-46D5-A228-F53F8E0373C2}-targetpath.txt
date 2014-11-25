@@ -12,3 +12,6 @@ Content\Textures\Win.xnb
 Content\Textures\check.xnb
 Content\Textures\vial.xnb
 Content\Textures\butt.xnb
+Content\Textures\Bar.xnb
+Content\Textures\hp.xnb
+Content\Textures\Pause.xnb
