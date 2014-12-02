@@ -11,9 +11,15 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Asteroid_Belt_Assault
 {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
+    /*todo
+     * 
+     * powerups
+     * particles
+     * boss
+     * shop
+     * mo enemies
+     * 
+     */
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
@@ -89,7 +95,7 @@ namespace Asteroid_Belt_Assault
         int wintimer = 120;
         int timeupdate = 0;
         int seconds = 0;
-        int minutes = 2;
+        int minutes = 1;
 
         public Game1()
         {
@@ -179,12 +185,14 @@ namespace Asteroid_Belt_Assault
 
             pericles14 = Content.Load<SpriteFont>(@"Fonts\Pericles14");
 
+            EffectManager.Initialize(graphics, Content);
+            EffectManager.LoadContent();
 
             // TODO: use this.Content to load your game content here
         }
         public void gethealth()
         {
-            Healthpacks.Add(new Sprite(new Vector2(rand.Next(100, 700), -100), Healthpack, new Rectangle(0, 0, 50, 50), new Vector2(0, rand.Next(50, 200))));
+            Healthpacks.Add(new Sprite(new Vector2(rand.Next(100, 700), -100), Healthpack, new Rectangle(0, 0, 50, 50), new Vector2(rand.Next(-11,11), rand.Next(50, 100))));
         }
         public void getjizz()
         {
@@ -223,6 +231,16 @@ namespace Asteroid_Belt_Assault
             if (Planet != Planets.NEPTUNE || Planet != Planets.SUN ||Planet != Planets.EARTH)
             {
                 minutes = 2;
+                seconds = 0;
+            }
+            if (Planet == Planets.NEPTUNE)
+            {
+                minutes = 1;
+                seconds = 30;
+            }
+            if (Planet == Planets.EARTH)
+            {
+                minutes = 1;
                 seconds = 0;
             }
             
@@ -343,7 +361,7 @@ namespace Asteroid_Belt_Assault
                         }
                         if (Health <= 0)
                         {
-                            gameState = GameStates.PlayerDead;
+                            gameState = GameStates.GameOver;
                             Health = 5000;
 
                         }
@@ -470,7 +488,7 @@ namespace Asteroid_Belt_Assault
                     if (neptune.IsBoxColliding(mouserect) && leftMouseClicked)
                     {
                         Planet = Planets.NEPTUNE; gameState = GameStates.LoadLevel;
-                        minutes = 3;
+                        minutes = 1; seconds = 30;
                     }
                     
                     break;
@@ -483,6 +501,10 @@ namespace Asteroid_Belt_Assault
             {
                 Healthpacks[i].Update(gameTime);
             }
+
+
+            EffectManager.Update(gameTime);
+
             base.Update(gameTime);
         }
 
@@ -551,11 +573,6 @@ namespace Asteroid_Belt_Assault
                 {
                     spriteBatch.Draw(buutt, buttbox, Color.White);
                 }
-
-                if (gameState == GameStates.Playing)
-                {
-                    spriteBatch.Draw(Pause,Pausebox,Color.White);
-                }
                 asteroidManager.Draw(spriteBatch);
                 playerManager.Draw(spriteBatch);
                 enemyManager.Draw(spriteBatch);
@@ -616,8 +633,10 @@ namespace Asteroid_Belt_Assault
                 spriteBatch.Draw(WinImg, new Rectangle(300, 200,200, 100), Color.White);
 
 
-
+            
             spriteBatch.End();
+
+            EffectManager.Draw();
 
             base.Draw(gameTime);
         }
