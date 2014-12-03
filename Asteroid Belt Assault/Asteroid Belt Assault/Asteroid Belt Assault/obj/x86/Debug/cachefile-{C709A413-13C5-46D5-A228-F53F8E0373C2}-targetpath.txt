@@ -69,3 +69,4 @@ Content\EffectLibrary\SimpleRain.xnb
 Content\EffectLibrary\StarFireImpact.xnb
 Content\EffectLibrary\StarTrail.xnb
 Content\EffectLibrary\WaterJet.xnb
+Content\Textures\background.xnb

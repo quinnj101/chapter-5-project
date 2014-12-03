@@ -17,7 +17,7 @@ namespace Asteroid_Belt_Assault
      * particles
      * boss
      * shop
-     * mo enemies
+     * LESS enemies
      * 
      */
     public class Game1 : Microsoft.Xna.Framework.Game
@@ -29,7 +29,7 @@ namespace Asteroid_Belt_Assault
         enum Planets { SUN, EARTH, MARS, MERCURY, NEPTUNE, none };
         GameStates gameState = GameStates.TitleScreen;
         Planets Planet = Planets.none;
-        Texture2D titleScreen;
+        Texture2D background;
         Texture2D spriteSheet;
         Texture2D planets;
         Texture2D WinImg;
@@ -119,7 +119,7 @@ namespace Asteroid_Belt_Assault
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            titleScreen = Content.Load<Texture2D>(@"Textures\TitleScreen");
+            background = Content.Load<Texture2D>(@"Textures\background");
             spriteSheet = Content.Load<Texture2D>(@"Textures\spriteSheet");
             planets = Content.Load<Texture2D>(@"Textures\Planets");
             WinImg = Content.Load<Texture2D>(@"Textures\Win");
@@ -318,6 +318,8 @@ namespace Asteroid_Belt_Assault
                                 gameState = GameStates.Win;
                         }
                     }
+                    
+
                     if (Planet == Planets.MERCURY)
                     {
                         if (collisionManager.killcounter >= 30)
@@ -353,7 +355,7 @@ namespace Asteroid_Belt_Assault
                     }
                     if (Planet == Planets.NEPTUNE)
                     {
-                        Health -= 6;
+                        Health -= 4;
 
                         if (Health >= 5000)
                         {
@@ -390,7 +392,7 @@ namespace Asteroid_Belt_Assault
                         {
                              if (shot.IsBoxColliding(buttbox))
                             {
-                                Health -= 1;
+                                Health -= 2;
                             }
                         }
                     }
@@ -440,6 +442,8 @@ namespace Asteroid_Belt_Assault
                     enemyManager.Update(gameTime);
                     playerManager.PlayerShotManager.Update(gameTime);
                     explosionManager.Update(gameTime);
+                    
+                    
 
                     if (playerDeathTimer >= playerDeathDelayTime)
                     {
@@ -480,6 +484,8 @@ namespace Asteroid_Belt_Assault
                     if (mercury.IsBoxColliding(mouserect) && leftMouseClicked)
                     {
                         Planet = Planets.MERCURY; gameState = GameStates.LoadLevel;
+                        collisionManager.killcounter = 0;
+                        
                     }
                     if (mars.IsBoxColliding(mouserect) && leftMouseClicked)
                     {
@@ -488,7 +494,7 @@ namespace Asteroid_Belt_Assault
                     if (neptune.IsBoxColliding(mouserect) && leftMouseClicked)
                     {
                         Planet = Planets.NEPTUNE; gameState = GameStates.LoadLevel;
-                        minutes = 1; seconds = 30;
+                        minutes = 1; seconds = 15;
                     }
                     
                     break;
@@ -520,7 +526,7 @@ namespace Asteroid_Belt_Assault
 
             if (gameState == GameStates.TitleScreen)
             {
-                spriteBatch.Draw(titleScreen, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height), Color.White);
+                spriteBatch.Draw(background, new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height), Color.White);
             }
             if (gameState == GameStates.Levels)
             {
@@ -609,7 +615,7 @@ namespace Asteroid_Belt_Assault
                 }
                 if (Planet == Planets.MERCURY)
                 {
-                    spriteBatch.DrawString(pericles14, "KILLS: " +collisionManager.killcounter + "/20", new Vector2(650, 10), Color.White);//survive
+                    spriteBatch.DrawString(pericles14, "KILLS: " +collisionManager.killcounter + "/30", new Vector2(650, 10), Color.White);//survive
                 }
                 spriteBatch.DrawString( pericles14,"Score: " + playerManager.PlayerScore.ToString(),scoreLocation,Color.White);
 

@@ -19,10 +19,10 @@ namespace Asteroid_Belt_Assault
         public ShotManager EnemyShotManager;
         private PlayerManager playerManager;
 
-        public int MinShipsPerWave = 10;
-        public int MaxShipsPerWave = 15;
+        public int MinShipsPerWave = 6;
+        public int MaxShipsPerWave = 12;
         private float nextWaveTimer = 0.0f;
-        private float nextWaveMinTimer = 4.0f;
+        private float nextWaveMinTimer = 5.0f;
         private float shipSpawnTimer = 0.0f;
         private float shipSpawnWaitTime = 0.5f;
 
@@ -157,7 +157,7 @@ namespace Asteroid_Belt_Assault
                 }
                 else
                 {
-                    if ((float)rand.Next(0, 1000) / 10 <= shipShotChance)
+                    if ((float)rand.Next(0, 1000) / 9 <= shipShotChance)
                     {
                         Vector2 fireLoc = Enemies[x].EnemySprite.Location;
                         fireLoc += Enemies[x].gunOffset;
