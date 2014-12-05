@@ -43,6 +43,9 @@ namespace Asteroid_Belt_Assault
                     {
                         shot.Location = offScreen;
                         enemy.Destroyed = true;
+                        EffectManager.Effect("BasicExplosion").Trigger(enemy.EnemySprite.Center);
+                        EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center);
+                        EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center);
                         killcounter++;
                         playerManager.PlayerScore += enemyPointValue;
                         explosionManager.AddExplosion(
@@ -58,14 +61,23 @@ namespace Asteroid_Belt_Assault
         {
             foreach (Sprite shot in playerManager.PlayerShotManager.Shots)
             {
-                foreach (Sprite asteroid in asteroidManager.Asteroids)
+                EffectManager.Effect("ShieldsUp").Trigger(shot.Center);
+                EffectManager.Effect("Enemy Cannon Fire").Trigger(shot.Center);
+                EffectManager.Effect("PulseTracker").Trigger(shot.Center);
+                EffectManager.Effect("MeteroidCollision").Trigger(shot.Center);
+                for (int i=0;i<asteroidManager.Asteroids.Count;i++)
                 {
                     if (shot.IsCircleColliding(
-                        asteroid.Center,
-                        asteroid.CollisionRadius))
+                        asteroidManager.Asteroids[i].Center,
+                        asteroidManager.Asteroids[i].CollisionRadius))
                     {
+
+
+                        EffectManager.Effect("BasicExplosion").Trigger(asteroidManager.Asteroids[i].Center);
+                        EffectManager.Effect("MeteroidExplode").Trigger(asteroidManager.Asteroids[i].Center);
+                        EffectManager.Effect("BasicExplosionWithHalo").Trigger(asteroidManager.Asteroids[i].Center);
                         shot.Location = offScreen;
-                        asteroid.Velocity += shotToAsteroidImpact;
+                        asteroidManager.Asteroids.Remove(asteroidManager.Asteroids[i]);
                     }
                 }
             }
@@ -75,12 +87,16 @@ namespace Asteroid_Belt_Assault
         {
             foreach (Sprite shot in enemyManager.EnemyShotManager.Shots)
             {
+                EffectManager.Effect("Ship Cannon Fire").Trigger(shot.Center);
+                EffectManager.Effect("Ship Cannon Fire").Trigger(shot.Center);
                 if (shot.IsCircleColliding(
                     playerManager.playerSprite.Center,
                     playerManager.playerSprite.CollisionRadius))
                 {
+                    EffectManager.Effect("BasicExplosionWithHalo").Trigger(playerManager.playerSprite.Center);
                     shot.Location = offScreen;
                     playerManager.Destroyed = true;
+                    
                     explosionManager.AddExplosion(
                         playerManager.playerSprite.Center,
                         Vector2.Zero);
@@ -97,6 +113,7 @@ namespace Asteroid_Belt_Assault
                     playerManager.playerSprite.CollisionRadius))
                 {
                     enemy.Destroyed = true;
+                    EffectManager.Effect("BasicExplosion").Trigger(enemy.EnemySprite.Center);
                     explosionManager.AddExplosion(
                         enemy.EnemySprite.Center,
                         enemy.EnemySprite.Velocity / 10);
@@ -118,6 +135,7 @@ namespace Asteroid_Belt_Assault
                     playerManager.playerSprite.Center,
                     playerManager.playerSprite.CollisionRadius))
                 {
+                    EffectManager.Effect("BasicExplosion").Trigger(playerManager.playerSprite.Center);
                     explosionManager.AddExplosion(
                         asteroid.Center,
                         asteroid.Velocity / 10);

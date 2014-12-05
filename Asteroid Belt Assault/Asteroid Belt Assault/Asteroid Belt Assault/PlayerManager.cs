@@ -70,7 +70,7 @@ namespace Asteroid_Belt_Assault
                 Vector2 direction = new Vector2((float)Math.Sin(this.playerSprite.Rotation), -(float)Math.Cos(this.playerSprite.Rotation));
                 direction.Normalize();
 
-                EffectManager.Effect("BasicExplosion").Trigger(playerSprite.Center);
+                
 
                 PlayerShotManager.FireShot(
                     playerSprite.Center + direction*20f,

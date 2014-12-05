@@ -40,6 +40,7 @@ Content\Textures\Star.xnb
 Content\Textures\Water001.xnb
 Content\Textures\Water002.xnb
 Content\Textures\Weeds.xnb
+Content\Textures\background.xnb
 Content\Sounds\Explosion1.xnb
 Content\Sounds\Explosion2.xnb
 Content\Sounds\Explosion3.xnb
@@ -69,4 +70,4 @@ Content\EffectLibrary\SimpleRain.xnb
 Content\EffectLibrary\StarFireImpact.xnb
 Content\EffectLibrary\StarTrail.xnb
 Content\EffectLibrary\WaterJet.xnb
-Content\Textures\background.xnb
+Content\Textures\Custom.png.xnb

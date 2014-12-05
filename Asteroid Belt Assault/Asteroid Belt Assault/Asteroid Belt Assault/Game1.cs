@@ -37,6 +37,7 @@ namespace Asteroid_Belt_Assault
         Texture2D Vial;
         Texture2D buutt;
         Texture2D HpBar;
+        Texture2D Backgroundstars;
         Texture2D Healthpack;
         Texture2D Pause;
 
@@ -47,7 +48,7 @@ namespace Asteroid_Belt_Assault
         PlayerManager playerManager;
         EnemyManager enemyManager;
         ExplosionManager explosionManager;
-
+        PlanetFlyby planetfly; 
         CollisionManager collisionManager;
 
         MouseState ms;
@@ -126,6 +127,7 @@ namespace Asteroid_Belt_Assault
             Check = Content.Load<Texture2D>(@"Textures\check");
             Vial = Content.Load<Texture2D>(@"Textures\vial");
             buutt = Content.Load<Texture2D>(@"Textures\butt");
+            Backgroundstars = Content.Load<Texture2D>(@"Textures\Custom.png");
             HpBar = Content.Load<Texture2D>(@"Textures\Bar");
             Healthpack = Content.Load<Texture2D>(@"Textures\hp");
             Pause = Content.Load<Texture2D>(@"Textures\Pause");
@@ -137,7 +139,7 @@ namespace Asteroid_Belt_Assault
             mars=new Sprite(new Vector2(500, 220), planets, new Rectangle(1 * 59, 2 * 59, 59, 59), new Vector2(0, 0));
 
             starField = new StarField(this.Window.ClientBounds.Width,this.Window.ClientBounds.Height,200,spriteSheet,new Rectangle(0, 450, 2, 2));
-
+            planetfly = new PlanetFlyby(Backgroundstars);
             asteroidManager = new AsteroidManager(
                 10,
                 spriteSheet,
@@ -508,7 +510,8 @@ namespace Asteroid_Belt_Assault
                 Healthpacks[i].Update(gameTime);
             }
 
-
+            planetfly.update(gameTime);
+            
             EffectManager.Update(gameTime);
 
             base.Update(gameTime);
@@ -575,6 +578,7 @@ namespace Asteroid_Belt_Assault
                 (gameState == GameStates.Win))
             {
                 starField.Draw(spriteBatch);
+                planetfly.Draw(spriteBatch);
                 if (Planet == Planets.EARTH)
                 {
                     spriteBatch.Draw(buutt, buttbox, Color.White);
