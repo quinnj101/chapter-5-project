@@ -44,7 +44,7 @@ namespace Asteroid_Belt_Assault
             foreach (Sprite star in planetsfly)
             {
                 star.Update(gametime);
-
+                
             }
             for (int i = 0; i < planetsfly.Count;i++)
             {

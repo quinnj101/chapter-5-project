@@ -138,3 +138,5 @@ C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroi
 C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\ProjectMercury.dll
 C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Textures\background.xnb
 C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Textures\Custom.png.xnb
+C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Sounds\GSP_Xmas_intro_2014_Full_.xnb
+C:\Users\eahscs\Documents\GitHub\chapter-5-project\Asteroid Belt Assault\Asteroid Belt Assault\Asteroid Belt Assault\bin\x86\Debug\Content\Sounds\GSP_Xmas_intro_2014_Full_.wma

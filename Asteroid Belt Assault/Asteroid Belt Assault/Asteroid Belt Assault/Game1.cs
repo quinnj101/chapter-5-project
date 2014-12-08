@@ -40,6 +40,7 @@ namespace Asteroid_Belt_Assault
         Texture2D Backgroundstars;
         Texture2D Healthpack;
         Texture2D Pause;
+        Song song;
 
         Random rand = new Random();
 
@@ -50,7 +51,6 @@ namespace Asteroid_Belt_Assault
         ExplosionManager explosionManager;
         PlanetFlyby planetfly; 
         CollisionManager collisionManager;
-
         MouseState ms;
 
         SpriteFont pericles14;
@@ -119,7 +119,7 @@ namespace Asteroid_Belt_Assault
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            
             background = Content.Load<Texture2D>(@"Textures\background");
             spriteSheet = Content.Load<Texture2D>(@"Textures\spriteSheet");
             planets = Content.Load<Texture2D>(@"Textures\Planets");
@@ -131,7 +131,8 @@ namespace Asteroid_Belt_Assault
             HpBar = Content.Load<Texture2D>(@"Textures\Bar");
             Healthpack = Content.Load<Texture2D>(@"Textures\hp");
             Pause = Content.Load<Texture2D>(@"Textures\Pause");
-
+            song = Content.Load<Song>(@"Sounds\GSP_Xmas_intro_2014_Full_");
+            MediaPlayer.Play(song);
             sun=new Sprite(new Vector2(10, 200), planets, new Rectangle(2 * 59, 3 * 59, 59, 59), new Vector2(0, 0));
             earth=new Sprite(new Vector2(280, 170), planets, new Rectangle(3 * 59, 3 * 59, 59, 59), new Vector2(0, 0));
             mercury = new Sprite(new Vector2(150, 200), planets, new Rectangle(1 * 59, 3 * 59, 59, 59), new Vector2(0, 0));
@@ -178,6 +179,7 @@ namespace Asteroid_Belt_Assault
                 new Rectangle(0, 450, 2, 2));
 
             collisionManager = new CollisionManager(
+                this,
                 asteroidManager,
                 playerManager,
                 enemyManager,
@@ -302,7 +304,14 @@ namespace Asteroid_Belt_Assault
                     explosionManager.Update(gameTime);
                     collisionManager.CheckCollisions();
 
-
+                    if (Planet == Planets.SUN)
+                    {
+                        enemyManager.ChangeTime(2);
+                    }
+                    if (Planet == Planets.NEPTUNE || Planet == Planets.MARS || Planet == Planets.EARTH  || Planet==Planets.MERCURY)
+                    {
+                        enemyManager.ChangeTime(5);
+                    }
                     if (Planet == Planets.NEPTUNE || Planet == Planets.SUN || Planet==Planets.EARTH)
                     {
                         timeupdate++;
@@ -390,12 +399,18 @@ namespace Asteroid_Belt_Assault
                     }
                     if (Planet == Planets.EARTH)
                     {
+
                         foreach (Sprite shot in enemyManager.EnemyShotManager.Shots)
                         {
                              if (shot.IsBoxColliding(buttbox))
                             {
                                 Health -= 2;
+                                EffectManager.Effect("ShieldBounce").Trigger(shot.Center);
                             }
+                        }
+                        if (Health <= 0)
+                        {
+                            gameState = GameStates.GameOver;
                         }
                     }
                     

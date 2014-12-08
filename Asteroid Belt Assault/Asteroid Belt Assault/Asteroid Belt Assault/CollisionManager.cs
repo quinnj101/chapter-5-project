@@ -16,14 +16,16 @@ namespace Asteroid_Belt_Assault
         private Vector2 shotToAsteroidImpact = new Vector2(0, -20);
         private int enemyPointValue = 100;
         public int killcounter = 0;
-
+        public Game1 game;
         public CollisionManager(
+            Game1 game,
             AsteroidManager asteroidManager,
             PlayerManager playerManager,
             EnemyManager enemyManager,
             ExplosionManager explosionManager)
 
         {
+            this.game = game;
             this.asteroidManager = asteroidManager;
             this.playerManager = playerManager;
             this.enemyManager = enemyManager;
@@ -41,7 +43,10 @@ namespace Asteroid_Belt_Assault
                         enemy.EnemySprite.Center,
                         enemy.EnemySprite.CollisionRadius))
                     {
-                        shot.Location = offScreen;
+                        if (game.getplanet() != "SUN")
+                        {
+                            shot.Location = offScreen;
+                        }
                         enemy.Destroyed = true;
                         EffectManager.Effect("BasicExplosion").Trigger(enemy.EnemySprite.Center);
                         EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center); EffectManager.Effect("StarFireImpact").Trigger(enemy.EnemySprite.Center);
@@ -72,7 +77,7 @@ namespace Asteroid_Belt_Assault
                         asteroidManager.Asteroids[i].CollisionRadius))
                     {
 
-
+                        SoundManager.PlayExplosion(); SoundManager.PlayExplosion();
                         EffectManager.Effect("BasicExplosion").Trigger(asteroidManager.Asteroids[i].Center);
                         EffectManager.Effect("MeteroidExplode").Trigger(asteroidManager.Asteroids[i].Center);
                         EffectManager.Effect("BasicExplosionWithHalo").Trigger(asteroidManager.Asteroids[i].Center);

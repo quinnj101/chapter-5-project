@@ -18,7 +18,7 @@ namespace Asteroid_Belt_Assault
 
         private static SoundEffect playerShot;
         private static SoundEffect enemyShot;
-
+        
         private static Random rand = new Random();
 
         public static void Initialize(ContentManager content)

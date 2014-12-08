@@ -62,7 +62,47 @@ namespace Asteroid_Belt_Assault
             }
             playerSprite.CollisionRadius = playerRadius;
         }
+        private void FireSuperShot()
+        {
+            if (shotTimer >= minShotTimer)
+            {
+                Vector2 direction = new Vector2((float)Math.Sin(this.playerSprite.Rotation), -(float)Math.Cos(this.playerSprite.Rotation));
+                direction.Normalize();
 
+                PlayerShotManager.FireShot(
+                    playerSprite.Center + direction * 20f,
+                    direction,
+                    true,true);
+                shotTimer = 0.0f;
+
+                direction.X += 0.08f;
+                PlayerShotManager.FireShot(
+                    playerSprite.Center + direction * 20f,
+                    direction,
+                    true, true);
+                shotTimer = 0.0f;
+
+                direction.X += 0.08f;
+                PlayerShotManager.FireShot(
+                    playerSprite.Center + direction * 20f,
+                    direction,
+                    true, true);
+                shotTimer = 0.0f;
+
+                direction.X -= 0.24f;
+                PlayerShotManager.FireShot(
+                    playerSprite.Center + direction * 20f,
+                    direction,
+                    true, true);
+
+                direction.X -= 0.08f;
+                PlayerShotManager.FireShot(
+                    playerSprite.Center + direction * 20f,
+                    direction,
+                    true, true);
+                shotTimer = -1.0f;
+            }
+        }
         private void FireShot()
         {
             if (shotTimer >= minShotTimer)
@@ -75,7 +115,7 @@ namespace Asteroid_Belt_Assault
                 PlayerShotManager.FireShot(
                     playerSprite.Center + direction*20f,
                     direction,
-                    true);
+                    true,false);
                 shotTimer = 0.0f;
             }
         }
@@ -114,6 +154,10 @@ namespace Asteroid_Belt_Assault
             if (keyState.IsKeyDown(Keys.Space))
             {
                 FireShot();
+            }
+            if (keyState.IsKeyDown(Keys.X))
+            {
+                FireSuperShot();
             }
         }
 

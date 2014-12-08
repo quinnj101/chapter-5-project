@@ -75,6 +75,24 @@ namespace Asteroid_Belt_Assault
             path3.Add(new Vector2(-100, 150));
             pathWaypoints.Add(path3);
             waveSpawns[3] = 0;
+
+            List<Vector2> path4 = new List<Vector2>();
+            path4.Add(new Vector2(-100, 300));
+            path4.Add(new Vector2(800, 300));
+            pathWaypoints.Add(path4);
+            waveSpawns[4] = 0;
+
+            List<Vector2> path5 = new List<Vector2>();
+            path5.Add(new Vector2(-100, 600));
+            path5.Add(new Vector2(600, -100));
+            pathWaypoints.Add(path5);
+            waveSpawns[5] = 0;
+
+            List<Vector2> path6 = new List<Vector2>();
+            path6.Add(new Vector2(-100, -100));
+            path6.Add(new Vector2(600, 600));
+            pathWaypoints.Add(path6);
+            waveSpawns[6] = 0;
         }
 
         public EnemyManager(
@@ -84,6 +102,7 @@ namespace Asteroid_Belt_Assault
             PlayerManager playerManager,
             Rectangle screenBounds)
         {
+            
             this.texture = texture;
             this.initialFrame = initialFrame;
             this.frameCount = frameCount;
@@ -99,7 +118,10 @@ namespace Asteroid_Belt_Assault
 
             setUpWaypoints();
         }
-
+        public void ChangeTime(int time)
+        {
+            this.nextWaveMinTimer = time;
+        }
         public void SpawnEnemy(int path)
         {
             Enemy thisEnemy = new Enemy(
@@ -139,6 +161,7 @@ namespace Asteroid_Belt_Assault
             nextWaveTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (nextWaveTimer > nextWaveMinTimer)
             {
+                //rand.Next(0, pathWaypoints.Count)
                 SpawnWave(rand.Next(0, pathWaypoints.Count));
                 nextWaveTimer = 0f;
             }
@@ -175,7 +198,7 @@ namespace Asteroid_Belt_Assault
                         EnemyShotManager.FireShot(
                             fireLoc,
                             shotDirection,
-                            false);
+                            false,false);
                     }
                 }
             }

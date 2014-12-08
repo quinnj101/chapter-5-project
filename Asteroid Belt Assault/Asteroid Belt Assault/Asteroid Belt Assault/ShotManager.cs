@@ -17,7 +17,6 @@ namespace Asteroid_Belt_Assault
         private static int FrameCount;
         private float shotSpeed;
         private static int CollisionRadius;
-
         public ShotManager(
             Texture2D texture,
             Rectangle initialFrame,
@@ -37,7 +36,7 @@ namespace Asteroid_Belt_Assault
         public void FireShot(
             Vector2 location,
             Vector2 velocity,
-            bool playerFired)
+            bool playerFired,bool supershot)
         {
             Sprite thisShot = new Sprite(
                 location,
@@ -74,6 +73,8 @@ namespace Asteroid_Belt_Assault
         {
             for (int x = Shots.Count - 1; x >= 0; x--)
             {
+               
+                
                 Shots[x].Update(gameTime);
                 if (!screenBounds.Intersects(Shots[x].Destination))
                 {
